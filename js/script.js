@@ -1,6 +1,7 @@
 // Global variables
 const profileInfo = document.querySelector(".overview");
 const username = "mandaeliza";
+const reposList = document.querySelector(".repo-list");
 
 const getProfile = async function () {
   const profileRequest = await fetch(
@@ -27,5 +28,25 @@ const displayProfile = function (data) {
         <p><strong>Number of public repos:</strong> ${data.public_repos}</p>
     </div>`;
   profileInfo.append(div);
+  getRepos();
 };
 
+const getRepos = async function () {
+    const reposRequest = await fetch(
+        ` https://api.github.com/users/${username}/repos`
+    );
+    const repos = await reposRequest.json();
+    // console.log(repos);
+    displayRepos(repos);
+};
+
+const displayRepos = function (repos) {
+    for (let repo of repos) {
+        // console.log(repo.name);
+    const li = document.createElement("li");
+    li.classList.add("repo");
+    li.innerHTML = `
+    <h3>${repo.name}</h3>`;
+    reposList.append(li);
+    }
+}
